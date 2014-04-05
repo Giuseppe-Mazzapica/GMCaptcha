@@ -49,7 +49,7 @@ if ( is_file( __DIR__ . '/vendor/autoload.php' ) ) {
  *
  * @return Pimple plugin container
  */
-function container() {
+function captcha_container() {
     static $container = NULL;
     if ( is_null( $container ) ) {
         $gd = function($c) {
@@ -90,7 +90,7 @@ function container() {
  * @param array $args customization arguments
  */
 function captcha( $args = [ ] ) {
-    $captcha = new Captcha( container() );
+    $captcha = new Captcha( captcha_container() );
     $captcha->fields( $args );
 }
 
@@ -100,7 +100,7 @@ function captcha( $args = [ ] ) {
  * @return bool if the current request has valid captcha and empty honeypot
  */
 function check_captcha() {
-    $captcha = new Captcha( container() );
+    $captcha = new Captcha( captcha_container() );
     return $captcha->verify();
 }
 
@@ -110,7 +110,7 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
         $re = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING ) === 'gmcaptcha_reload';
         $action = $re ? 'gmcaptcha_reload' : 'gmcaptcha';
         $method = $re ? 'reload' : 'stream';
-        add_action( "wp_ajax{$nopriv}_{$action}", [ new Stream( container() ), $method ] );
+        add_action( "wp_ajax{$nopriv}_{$action}", [ new Stream( captcha_container() ), $method ] );
     }, 20 );
 } else {
     load_plugin_textdomain( 'gmcaptcha', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
