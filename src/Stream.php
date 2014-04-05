@@ -18,19 +18,16 @@ class Stream {
                 $code = $this->check( $this->container[ 'tools' ]->random( $num ) );
             }
         }
-        $class = $this->getEditor();
-        if ( $class ) {
-            $editor = new $class( $this->container[ 'img' ] );
-            if ( ! is_wp_error( $editor->load() ) ) {
-                $this->setupContainer();
-                $image = $this->getImage( $editor );
-                $image->setCode( $code );
-                $image->setColor();
-                $image->addNoise();
-                $image->addText();
-                $editor->setImage( $image->getImage() );
-                $this->output( $editor, $reload, $code );
-            }
+        $editor = $this->getEditor();
+        if ( ! is_wp_error( $editor ) ) {
+            $this->setupContainer();
+            $image = $this->getImage( $editor );
+            $image->setCode( $code );
+            $image->setColor();
+            $image->addNoise();
+            $image->addText();
+            $editor->setImage( $image->getImage() );
+            $this->output( $editor, $reload, $code );
         }
         die( '' );
     }
@@ -59,14 +56,13 @@ class Stream {
     }
 
     protected function getEditor() {
-        $class = 'EditorGD';
-        $editor = _wp_image_editor_choose();
-        if ( in_array( $editor, ['WP_Image_Editor_Imagick', 'WP_Image_Editor_GD' ], TRUE ) ) {
-            if ( $editor === 'WP_Image_Editor_Imagick' ) $class = 'EditorImagick';
-        } else {
-            $class = FALSE;
-        }
-        return $class ? '\\' . __NAMESPACE__ . '\\' . $class : FALSE;
+        $once = NULL;
+        add_filter( 'wp_image_editors', function( $core ) use( &$once ) {
+            if ( ! is_null( $once ) ) return $core;
+            $once = 1;
+            return [ '\GM\EditorImagick', '\GM\EditorGD' ];
+        } );
+        return wp_get_image_editor( $this->container[ 'img' ] );
     }
 
     protected function setupContainer() {
