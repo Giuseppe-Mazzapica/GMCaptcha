@@ -28,7 +28,7 @@ class Captcha {
     function __construct( \Pimple $container = NULL ) {
         if ( ! is_null( $container ) ) {
             $this->container = $container;
-            $this->tools = $this->container[ 'tools' ];
+            $this->tools = $this->container['tools'];
         }
     }
 
@@ -59,7 +59,7 @@ class Captcha {
      */
     private function setCode() {
         if ( is_null( $this->chars_num ) ) {
-            $this->chars_num = $this->container[ 'options' ][ 'chars_num' ];
+            $this->chars_num = $this->container['options']['chars_num'];
         }
         $this->code = $this->tools->random( $this->chars_num );
     }
@@ -94,10 +94,10 @@ class Captcha {
         $data = $this->prepareData();
         $url = esc_url( add_query_arg( $data, admin_url( 'admin-ajax.php' ) ) );
         $newcode = $this->tools->random( $this->chars_num );
-        unset( $data[ 'c' ] );
+        unset( $data['c'] );
         $c = esc_attr( $this->tools->encode( $newcode ) );
-        $data[ 'action' ] = 'gmcaptcha_reload';
-        $data[ 'chars_num' ] = $this->chars_num;
+        $data['action'] = 'gmcaptcha_reload';
+        $data['chars_num'] = $this->chars_num;
         add_action( 'wp_footer', function() use($data) {
             $this->addScript( $data );
         }, 0 );
@@ -116,7 +116,7 @@ class Captcha {
     function addScript( $data ) {
         $script = defined( 'WP_DEBUG' ) && WP_DEBUG ? 'gmcaptcha.js' : 'gmcaptcha.min.js';
         wp_enqueue_script(
-            'gmcaptcha', $this->container[ 'url' ] . $script, [ 'jquery' ], NULL, TRUE
+            'gmcaptcha', $this->container['url'] . $script, [ 'jquery' ], NULL, TRUE
         );
         $data = [
             'hidden'     => md5( __CLASS__ ) . '_n',
@@ -134,19 +134,19 @@ class Captcha {
             'c'      => $this->tools->encode( $this->code ),
         ];
         if ( ! is_null( $this->width ) && ! is_null( $this->height ) ) {
-            $data[ 'size' ] = "{$this->width}x{$this->height}";
+            $data['size'] = "{$this->width}x{$this->height}";
         } else {
-            $this->width = $this->container[ 'size' ][ 0 ];
-            $this->height = $this->container[ 'size' ][ 1 ];
+            $this->width = $this->container['size'][0];
+            $this->height = $this->container['size'][1];
         }
         if ( ! is_null( $this->dots ) && is_numeric( $this->dots ) ) {
-            $data[ 'dots' ] = "{$this->dots}";
+            $data['dots'] = "{$this->dots}";
         }
         if ( ! is_null( $this->lines ) && is_numeric( $this->lines ) ) {
-            $data[ 'lines' ] = "{$this->lines}";
+            $data['lines'] = "{$this->lines}";
         }
         if ( ! is_null( $this->color ) && is_string( $this->color ) ) {
-            $data[ 'color' ] = "{$this->color}";
+            $data['color'] = "{$this->color}";
         }
         return $data;
     }

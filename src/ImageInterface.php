@@ -4,7 +4,7 @@ namespace GM;
 
 interface ImageInterface {
 
-    function setCode($code);
+    function setCode( $code );
 
     function setColor();
 

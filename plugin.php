@@ -53,12 +53,12 @@ function captcha_container() {
     static $container = NULL;
     if ( is_null( $container ) ) {
         $gd = function($c) {
-            $img = ! isset( $c[ 'image' ] ) ? imagecreatefromjpeg( $c[ 'img' ] ) : $c[ 'image' ];
-            return new ImageGD( $img, $c[ 'size' ], $c[ 'tools' ], $c[ 'options' ] );
+            $img = ! isset( $c['image'] ) ? imagecreatefromjpeg( $c['img'] ) : $c['image'];
+            return new ImageGD( $img, $c['size'], $c['tools'], $c['options'] );
         };
         $imagik = function($c) {
-            $img = ! isset( $c[ 'image' ] ) ? new \Imagick( $c[ 'img' ] ) : $c[ 'image' ];
-            return new ImageImagick( $img, $c[ 'size' ], $c[ 'options' ] );
+            $img = ! isset( $c['image'] ) ? new \Imagick( $c['img'] ) : $c['image'];
+            return new ImageImagick( $img, $c['size'], $c['options'] );
         };
         $url = plugins_url( '/', __FILE__ );
         $options = [
