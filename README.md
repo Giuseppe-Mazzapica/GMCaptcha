@@ -79,7 +79,7 @@ Defaults can be changed using some filter hooks:
  - `'gmcaptcha_base_img'` to customize the base image for captcha. Hooked functions must return a full url
  - `'gmcaptcha_default_size'` to customize the captcha size. Hooked functions a 2-items array: 1st is width, 2nd is height
  - `'gmcaptcha_defaults'` to customize different aspects of the captcha. Hooked functions must return an array, where accepted key/default values are:
- - 
+
               $options = [
                 'lines'     => 10, // number of  lines to create "noise"
                 'dots'      => 100, // number of dots to create "noise"
