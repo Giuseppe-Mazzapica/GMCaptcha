@@ -48,6 +48,7 @@
     };
 
     $(document).on('click', 'a.gmcaptcha', function(e) {
+        e.preventDefault();
         var $a = $(this);
         if ($a.data('disabled')) {
             return false;
