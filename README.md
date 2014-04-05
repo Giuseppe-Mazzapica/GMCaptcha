@@ -58,14 +58,14 @@ By default GM Captcha prints 4 fields:
  
 the only thing needed to print this field is just call the function **`GM\captcha()`**. Nothing else.
 
-Tha function will not create the form, will not add any style, and fields have a minimal markup to easy the styiling.
+Tha function will not create the form, will not add any style, and fields have a minimal markup to easy the styling.
  
     
 ###Check Value###
 
 When the form is submitted, the only thing needed to check the captcha is call **`GM\check_captcha()`**.
 
-The function will autodetected everything and return `TRUE` if enetered value is the right one.
+The function will autodetected everything and return `TRUE` if the entered value is the right one.
 
 ###Configure###
 
@@ -81,7 +81,7 @@ Of course, both methods can be used togheter and customization passed to functio
 Defaults can be changed using some filter hooks:
 
  - `'gmcaptcha_base_img'` to customize the base image for captcha. Hooked functions must return a full url
- - `'gmcaptcha_default_size'` to customize the captcha size. Hooked functions a 2-items array: 1st is width, 2nd is height
+ - `'gmcaptcha_default_size'` to customize the captcha size. Hooked functions must return a 2-items array: 1st is width, 2nd is height
  - `'gmcaptcha_defaults'` to customize different aspects of the captcha. Hooked functions must return an array, where accepted key/default values are:
 
           $options = [
@@ -96,8 +96,8 @@ Defaults can be changed using some filter hooks:
          
 ####Function Arguments####
 
-The function `GM\captcha()` can take an array of arguments to customize the appareance of captcha.
-This array is identical to the one that should return the `'gmcaptcha_defaults'` filter, plus 2 other args:
+The function `GM\captcha()` can take an array of arguments to customize the appearance of captcha.
+This array is identical to the one that should be returned on the `'gmcaptcha_defaults'` filter, plus 2 other args:
 `'width'` and `'height'`.
 
 An example of fully customized function:
@@ -112,16 +112,16 @@ An example of fully customized function:
       'height'    => 150
     ]);
     
-Please note that `'width'` and `'height'` arguments works only if both are used: setting only one it will be ignored.
+Please note that `'width'` and `'height'` arguments **works only if both are used**: if only one is set, it will be ignored.
 
 ###Honeypot###
 
-As said, GM Captcha integrates a simple honeypot check: is just a text field hidden via inline style (on parent `span`)
-that must be empty, if some robots will fill that field validation fail.
+As said, GM Captcha embed a simple honeypot check: is just a text field hidden via inline style (on parent `span`)
+that must be empty, and if some robots will fill that field validation fail.
 
-There is no additional validation to make for honeypot, all is handled via `GM\check_captcha()`.
+There is no additional validation to make for the honeypot works, all is handled via `GM\check_captcha()`.
 
-However, is possible disable the honeypot returnin an empty value on `'gmcaptcha_use_honeypot'` filter hook:
+However, is possible disable the honeypot returning an empty value on `'gmcaptcha_use_honeypot'` filter hook:
 
     add_filter('gmcaptcha_use_honeypot', '__return_false');
     
@@ -129,7 +129,7 @@ However, is possible disable the honeypot returnin an empty value on `'gmcaptcha
 
 There are few other hooks available:
 
- - `'gmcaptcha_container_class'` to customize the class for the `div` that wrap the captha fields (empty by default)
+ - `'gmcaptcha_container_class'` to customize the class for the `div` that wrap the captcha fields (empty by default)
  - `'gmcaptcha_label'` to customize the text shown next to the text field, default: `__('Type the captcha:', 'gmcaptcha')`
  
 All the (few) strings used in the plugin are translatable, the text domain is 'gmcaptcha' and plugins already comes with italian translation.
@@ -137,12 +137,12 @@ All the (few) strings used in the plugin are translatable, the text domain is 'g
 
 ##Notes##
 
-To generate the images the plugin uses an extension of core `WP_Image_Editor` class that auto choose as image driver the first available from
-`ImageMagik` an `GD`. Image quality is better when used with `ImageMagik` that is the default.
+To create the images the plugin uses an extension of core `WP_Image_Editor` classes, so auto-choose as image driver the first available from
+`ImageMagik` an `GD` using [`wp_get_image_editor`](http://codex.wordpress.org/Function_Reference/wp_get_image_editor). Image quality is better when `ImageMagik` is used (default when available).
 
-To re-generate the image upon click (when unreadable code is shown) plugin uses a little javascript (971 byte in minimized version).
+To re-generate the image upon click (when unreadable code is shown) plugin uses a little javascript script (971 byte in minimized version).
 This script require jQuery (*properly* enqueued using `wp_enqueue_script`).
-Minimized version is automatically used when `WP_DEBUG` is set to `FALSE`;
+Minimized version is automatically used when `WP_DEBUG` is set to `FALSE`.
 
 
 ##License and Credits##
