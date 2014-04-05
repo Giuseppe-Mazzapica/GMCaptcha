@@ -84,7 +84,7 @@ Defaults can be changed using some filter hooks:
                 'lines'     => 10, // number of  lines to create "noise"
                 'dots'      => 100, // number of dots to create "noise"
                 'color'     => '7d1ac5', // foreground color, used for captcha code and noise
-                'font'      => "{$pluginpath}/BrokenGlass.ttf", // the font of captcha code. Must be an absolute path to a .ttf file.
+                'font'      => "{$pluginpath}/BrokenGlass.ttf", // the font. Must be an absolute path to a .ttf file
                 'chars_num' => 4 // number of characters in the captcha code
               ];
 
