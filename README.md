@@ -5,7 +5,7 @@ A simple captcha (and honeypot) implementation for WordPress.
 
 It requires **PHP 5.4+**.
 
-![GM Captcha Screenshot](/screenshot.png "GM Captcha (big sized) Screenshot")
+![GM Captcha Screenshot](http://i.imgur.com/Q8xGidV.gif "GM Captcha (big sized) Screenshot")
 
 -----------
 
