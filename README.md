@@ -88,7 +88,7 @@ Defaults can be changed using some filter hooks:
                 'chars_num' => 4 // number of characters in the captcha code
               ];
 
- - `'gmcaptcha_container'` => $pimple // advanced filter that allow to completely customize the Pimple container used by plugin
+ - `'gmcaptcha_container'` // advanced filter that allow to completely customize the Pimple container used by plugin
          
 ####Function Arguments####
 
