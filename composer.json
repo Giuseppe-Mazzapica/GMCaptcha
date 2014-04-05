@@ -23,7 +23,8 @@
     "autoload": {
         "psr-4": {
             "GM\\": "src/"
-        }
+        },
+        "files": ["plugin.php"]
     },
     "config": {
         "optimize-autoloader": true
