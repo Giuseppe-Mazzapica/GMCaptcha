@@ -74,7 +74,7 @@ function captcha_container() {
             'gd'      => $gd,
             'imagick' => $imagik,
             'img'     => apply_filters( 'gmcaptcha_base_img', $url . '/noise.jpg' ),
-            'size'    => apply_filters( 'gmcaptcha_default_size', [ 140, 70 ] ),
+            'size'    => apply_filters( 'gmcaptcha_default_size', [140, 70 ] ),
             'options' => apply_filters( 'gmcaptcha_defaults', $options )
         ];
         $orig = new \Pimple( $c );
@@ -110,8 +110,25 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
         $re = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING ) === 'gmcaptcha_reload';
         $action = $re ? 'gmcaptcha_reload' : 'gmcaptcha';
         $method = $re ? 'reload' : 'stream';
-        add_action( "wp_ajax{$nopriv}_{$action}", [ new Stream( captcha_container() ), $method ] );
+        add_action( "wp_ajax{$nopriv}_{$action}", [new Stream( captcha_container() ), $method ] );
     }, 20 );
 } else {
     load_plugin_textdomain( 'gmcaptcha', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
+
+register_activation_hook( __FILE__, function() {
+    if (
+        extension_loaded( 'imagick' ) && class_exists( 'Imagick' ) && class_exists( 'ImagickPixel' )
+        && ! version_compare( phpversion( 'imagick' ), '2.2.0', '<' )
+    ) return;
+    if ( extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ) return;
+    global $status, $page, $s;
+    $imagik = 'http://php.net/manual/en/class.imagick.php';
+    $gd = 'http://php.net/manual/en/book.image.php';
+    $back = self_admin_url( "plugins.php?plugin_status={$status}&paged={$page}&s={$s}" );
+    $msg = '<h2>Ops...</h2>'
+        . '<p>Sorry, GM Captcha can\'t be activated because in you system is not available '
+        . '<a href="%s" target="_blank">Imagik</a> nor <a href="%s" target="_blank">GD</a>.</p>'
+        . '<p>Back to <a href="%s">Installed Plugins</a>.</p>';
+    wp_die( sprintf( $msg, esc_url( $imagik ), esc_url( $gd ), esc_url( $back ) ) );
+} );

@@ -36,6 +36,7 @@ class Captcha {
      * Allow to configure some options, generate a random code and print the fields
      */
     function fields( $args = [ ] ) {
+        if ( Stream::checkEditors() === FALSE ) return;
         $good = [ 'chars_num', 'dots', 'lines', 'width', 'height', 'color' ];
         foreach ( $args as $k => $v ) {
             if ( in_array( $k, $good ) ) $this->$k = $v;

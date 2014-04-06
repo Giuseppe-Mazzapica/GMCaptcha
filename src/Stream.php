@@ -19,7 +19,7 @@ class Stream {
             }
         }
         $editor = $this->getEditor();
-        if ( ! is_wp_error( $editor ) ) {
+        if ( $editor !== FALSE && ! is_wp_error( $editor ) ) {
             $this->setupContainer();
             $image = $this->getImage( $editor );
             $image->setCode( $code );
@@ -56,13 +56,27 @@ class Stream {
     }
 
     protected function getEditor() {
-        $once = NULL;
-        add_filter( 'wp_image_editors', function( $core ) use( &$once ) {
-            if ( ! is_null( $once ) ) return $core;
-            $once = 1;
-            return [ '\GM\EditorImagick', '\GM\EditorGD' ];
-        } );
-        return wp_get_image_editor( $this->container['img'] );
+        $class = static::checkEditors();
+        if ( $class === FALSE ) return $class;
+        $editor = new $class( $this->container['img'] );
+        $loaded = $editor->load();
+        if ( is_wp_error( $loaded ) ) return $loaded;
+        return $editor;
+    }
+
+    static function checkEditors() {
+        global $wp_filters;
+        $now = isset( $wp_filters['wp_image_editors'] ) ? $wp_filters['wp_image_editors'] : NULL;
+        if ( ! is_null( $now ) ) unset( $wp_filters['wp_image_editors'] );
+        add_filter( 'wp_image_editors', [ __CLASS__, 'getEditors' ] );
+        $class = _wp_image_editor_choose();
+        remove_filter( 'wp_image_editors', [ __CLASS__, 'getEditors' ] );
+        if ( ! is_null( $now ) ) $wp_filters['wp_image_editors'] = $now;
+        return in_array( $class, static::getEditors(), TRUE ) ? $class : FALSE;
+    }
+
+    static function getEditors() {
+        return [ '\GM\EditorImagick', '\GM\EditorGD' ];
     }
 
     protected function setupContainer() {
