@@ -37,8 +37,7 @@ class Stream {
     }
 
     protected function check( $code ) {
-        $p = '/[^23456789abcdefghjkmnpqrstvwxyz]/';
-        $sane = preg_replace( $p, '', $code );
+        $sane = preg_replace( '/[^23456789abcdefghjkmnpqrstvwxyz]/', '', $code );
         return $sane === $code ? $sane : FALSE;
     }
 
