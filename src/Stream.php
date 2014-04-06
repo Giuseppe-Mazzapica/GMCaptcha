@@ -37,9 +37,9 @@ class Stream {
     }
 
     protected function check( $code ) {
-        $p = '/[\W23456789abcdfghjkmnpqrstvwxyz]/';
-        $c = '/[^\W23456789abcdfghjkmnpqrstvwxyz]/';
-        return strlen( preg_replace( $p, '', $code ) ) === 0 ? preg_replace( $c, '', $code ) : FALSE;
+        $p = '/[^23456789abcdefghjkmnpqrstvwxyz]/';
+        $sane = preg_replace( $p, '', $code );
+        return $sane === $code ? $sane : FALSE;
     }
 
     protected function output( EditorInterface $editor, $reload = FALSE, $code = NULL ) {

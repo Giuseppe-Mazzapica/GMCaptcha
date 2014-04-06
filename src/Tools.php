@@ -38,7 +38,7 @@ class Tools {
     }
 
     function random( $num = 5 ) {
-        $letters = '23456789abcdfghjkmnpqrstvwxyz';
+        $letters = '23456789abcdefghjkmnpqrstvwxyz';
         $len = strlen( $letters ) - 1;
         $i = 0;
         $code = '';
